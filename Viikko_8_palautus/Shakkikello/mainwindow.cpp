@@ -13,6 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
     pQtimer->start(1000);
 
     setGameInfoText("Odotetaan pelivalintaa",12);
+
+    ui->startGameButton->setEnabled(false);
+    ui->stopGameButton->setEnabled(false);
+    ui->SwitchPlayer1->setEnabled(false);
+    ui->SwitcPlayer2->setEnabled(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +41,9 @@ void MainWindow::on_startGameButton_clicked()
 {
     currentPlayer = 1;
     connect(pQtimer, SIGNAL(timeout()),this, SLOT(timeout()));
+
+    ui->stopGameButton->setEnabled(true);
+    ui->startGameButton->setEnabled(false);
 }
 
 
@@ -49,31 +58,53 @@ void MainWindow::updateProgressBar()
         player1Time--;
         ui->progressBar1->setValue(player1Time);
         setGameInfoText("Pelaajan 1 vuoro", 12);
+        ui->SwitcPlayer2->setEnabled(false);
+        ui->SwitchPlayer1->setEnabled(true);
+        ui->pushButton2min->setEnabled(false);
+        ui->pushButton5min->setEnabled(false);
 
     }else if(tila == 1 & currentPlayer == 2){
         player2Time--;
         ui->progressBar2->setValue(player2Time);
         setGameInfoText("Pelaajan 2 vuoro", 12);
+        ui->SwitcPlayer2->setEnabled(true);
+        ui->SwitchPlayer1->setEnabled(false);
+        ui->pushButton2min->setEnabled(false);
+        ui->pushButton5min->setEnabled(false);
     }
      else if(tila == 2 & currentPlayer == 1){
         player1Time--;
         ui->progressBar1->setValue(player1Time);
         setGameInfoText("Pelaajan 1 vuoro", 12);
-
+        ui->SwitcPlayer2->setEnabled(false);
+        ui->SwitchPlayer1->setEnabled(true);
+        ui->pushButton2min->setEnabled(false);
+        ui->pushButton5min->setEnabled(false);
 
     } else if(tila == 2 & currentPlayer == 2){
         player2Time--;
         ui->progressBar2->setValue(player2Time);
         setGameInfoText("Pelaajan 2 vuoro", 12);
-
+        ui->SwitcPlayer2->setEnabled(true);
+        ui->SwitchPlayer1->setEnabled(false);
+        ui->pushButton2min->setEnabled(false);
+        ui->pushButton5min->setEnabled(false);
 
     } if(player1Time == 0){
-        setGameInfoText("Aika loppui. Pelaaja 2 voittaa!", 15);
+        setGameInfoText("Aika loppui. Pelaaja 2 voittaa! Valitse uusi peli.", 15);
         disconnect(pQtimer, SIGNAL(timeout()),this, SLOT(timeout()));
+        ui->SwitcPlayer2->setEnabled(false);
+        ui->SwitchPlayer1->setEnabled(false);
+        ui->pushButton2min->setEnabled(true);
+        ui->pushButton5min->setEnabled(true);
 
     } if(player2Time == 0){
-        setGameInfoText("Aika loppui. Pelaaja 1 voittaa!", 15);
+        setGameInfoText("Aika loppui. Pelaaja 1 voittaa! Valitse uusi peli.", 15);
         disconnect(pQtimer, SIGNAL(timeout()),this, SLOT(timeout()));
+        ui->SwitcPlayer2->setEnabled(false);
+        ui->SwitchPlayer1->setEnabled(false);
+        ui->pushButton2min->setEnabled(true);
+        ui->pushButton5min->setEnabled(true);
     }
 }
 
@@ -98,6 +129,8 @@ void MainWindow::on_pushButton2min_clicked()
     ui->progressBar2->setValue(120);
 
     setGameInfoText("2 min peli valittu",12);
+
+    ui->startGameButton->setEnabled(true);
 }
 
 
@@ -114,6 +147,8 @@ void MainWindow::on_pushButton5min_clicked()
     ui->progressBar2->setValue(300);
 
     setGameInfoText("5 min peli valittu",12);
+
+    ui->startGameButton->setEnabled(true);
 }
 
 
